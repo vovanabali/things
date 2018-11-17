@@ -9,9 +9,9 @@ adminName: slavanabali
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/thingsBotDB
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://postgres://pukhtkkyoxbsfd:2ffcfb3fe623632733ebb5a573075b5bbcd365de289f1fb7290f6302db0571b7@ec2-79-125-124-30.eu-west-1.compute.amazonaws.com:5432/d6jiil0qehb868
+    username: pukhtkkyoxbsfd
+    password: 2ffcfb3fe623632733ebb5a573075b5bbcd365de289f1fb7290f6302db0571b7
   jpa:
     properties:
       hibernate:
