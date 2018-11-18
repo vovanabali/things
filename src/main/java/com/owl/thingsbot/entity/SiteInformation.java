@@ -32,6 +32,7 @@ public class SiteInformation {
         } catch (Exception e) {
             log.error("Failed to map site to string: " + uri);
         }
-        return "[" + host + "](" + uri + ")" + " - " + description;
+        return uri + " - " +  description;
+        //return "[" + host + "](" + uri + ")" + " - " + description;
     }
 }

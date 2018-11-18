@@ -342,7 +342,11 @@ public class Bot extends TelegramLongPollingBot {
         sendMessage.enableMarkdown(true);
         sendMessage.setText(text);
         sendMessage.disableWebPagePreview();
-        execute(sendMessage);
+        try {
+            execute(sendMessage);
+        } catch (Exception ex) {
+            log.error("Failed to send message", ex);
+        }
     }
 
     private void sendMessage(Command command, String text, ReplyKeyboardMarkup keyboard) throws TelegramApiException {
