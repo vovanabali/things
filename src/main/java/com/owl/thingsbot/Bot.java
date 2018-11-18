@@ -84,6 +84,11 @@ public class Bot extends TelegramLongPollingBot {
             if (Objects.nonNull(lastAdminCommand)) {
                 switch (lastAdminCommand.getQuery()) {
                     case ADD_SITE: {
+                        if (Objects.isNull(command.getSiteUrl())) {
+                            lastAdminCommand = null;
+                            adminActions(command);
+                            return;
+                        }
                         if (Objects.nonNull(informationService.getSiteByURL(command.getSiteUrl()))) {
                             sendMessage(command, "Такой URL уже есть в базе данных, поробуйте другой или внесите изменения в старый");
                             return;
@@ -94,6 +99,11 @@ public class Bot extends TelegramLongPollingBot {
                         break;
                     }
                     case ADD_SITE_DESCRIPTION: {
+                        if (!command.getQuery().equals(COMMAND_NOT_FOUND)) {
+                            lastAdminCommand = null;
+                            adminActions(command);
+                            return;
+                        }
                         information.setDescription(command.getUserMessage());
                         informationService.save(information);
                         information = new SiteInformation();

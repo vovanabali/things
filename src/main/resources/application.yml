@@ -1,11 +1,12 @@
 bot:
-  name: MyApiTestApi229Bot
-  token: 766124652:AAE5pLpmbob-fHiaDQIvmbS2UbaxNz4x8Dw
-botInformation: "Повествование, в отличие от описания, представляет собой изображение событий или явлений, совершающихся не одновременно, а следующих друг за другом или обусловливающих друг друга. Самый, по-видимому, краткий в мировой литературе пример текста повествования – знаменитый рассказ Цезаря: «Пришёл, увидел, победил». Он ярко и точно передаёт суть повествования – это рассказ о том, что произошло, случилось."
-#redirect on chanel
-channel: lentachold
+  name: sitelist_bot
+  token: 689438604:AAFMURUB3uJ67pW79PnSosMDxo0oleqkzo4
+#bot description
+botInformation: "Описание бота"
+#redirect on channel
+channel: gosales
 #user administration name
-adminName: slavanabali
+adminName: golesha
 
 spring:
   datasource:
