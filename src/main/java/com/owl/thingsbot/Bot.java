@@ -322,7 +322,7 @@ public class Bot extends TelegramLongPollingBot {
                         sendButtons(command);
                         break;
                     }
-                    sendSiteListButtons(command, GET_INFORMATION_BY_ID, "Выберите сайте который вы имели в веду", informations);
+                    sendSiteListButtons(command, GET_INFORMATION_BY_ID, "Выберите сайт который вы имели в виду", informations);
                     break;
             }
         } catch (TelegramApiException e) {
