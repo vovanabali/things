@@ -4,6 +4,7 @@ import com.owl.thingsbot.enums.Query;
 import com.owl.thingsbot.enums.QueryType;
 import lombok.Data;
 import org.apache.commons.validator.UrlValidator;
+import org.springframework.beans.factory.annotation.Value;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -68,7 +69,11 @@ public class Command {
                 String[] args = command.split(" ");
                 if (args.length > 1) {
                     userQuery = Query.getByCommandName(args[0]);
-                    setUserMessage(command.split(args[0])[1]);
+                    if (userQuery.equals(COMMAND_NOT_FOUND)) {
+                        setUserMessage(command);
+                    } else {
+                        setUserMessage(command.split(args[0])[1]);
+                    }
                 } else {
                     setUserMessage(command);
                 }

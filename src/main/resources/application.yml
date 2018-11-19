@@ -1,18 +1,18 @@
 bot:
-  name: sitelist_bot
-  token: 689438604:AAFMURUB3uJ67pW79PnSosMDxo0oleqkzo4
+  name: MyApiTestApi229Bot
+  token: 766124652:AAE5pLpmbob-fHiaDQIvmbS2UbaxNz4x8Dw
 #bot description
 botInformation: "Описание бота"
 #redirect on channel
 channel: gosales
 #user administration name
-adminName: golesha
+adminName: slavanabali
 
 spring:
   datasource:
-    url: jdbc:postgresql://thingsdbserver.postgres.database.azure.com:5432/postgres
-    username: things@thingsdbserver
-    password: Slavanabali1
+    url: jdbc:postgresql://localhost:5432/thingsBotDB
+    username: postgres
+    password: postgres
   jpa:
     properties:
       hibernate:

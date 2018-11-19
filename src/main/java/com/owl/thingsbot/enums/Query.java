@@ -25,7 +25,8 @@ public enum Query {
     EDIT_SITE_DESCRIPTION_LIST("/edit_site_description_list"),
     EDIT_SITE_DESCRIPTION("/edit_site_description"),
     EDIT_SITE_DESCRIPTION_BY_ID("/edit_site_description_by_id"),
-    HELP("Помощь");
+    HELP("Помощь"),
+    GET_INFORMATION_BY_ID("/get_information_by_site_id");
 
     private String commandName;
 

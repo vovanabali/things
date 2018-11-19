@@ -43,11 +43,22 @@ public class SiteInformationServiceImpl implements SiteInformationService{
 
     @Override
     public List<SiteInformation> getSitesByUrl(String url) {
-        return siteInformationDao.findByUriContaining(url);
+        return siteInformationDao.findByUriContainingIgnoreCase(url);
     }
 
     @Override
     public SiteInformation getById(Long id) {
         return siteInformationDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public String getAllSitesURL() {
+        List<String> urls = Utils.emptyIfNull(getAll()).stream().map(SiteInformation::getUri).collect(Collectors.toList());
+        if (urls.isEmpty()) {
+            return "База в данный момент пуста";
+        }
+        final StringBuilder response = new StringBuilder();
+        urls.forEach(s -> response.append(s.concat("\n\n")));
+        return response.toString();
     }
 }

@@ -137,7 +137,7 @@ public class Bot extends TelegramLongPollingBot {
                     case EDIT_SITE_DESCRIPTION_BY_ID: {
                         SiteInformation siteInformation = informationService.getById(Utils.getIdFromCommand(lastAdminCommand));
                         if (Objects.nonNull(siteInformation)) {
-                            siteInformation.setDescription(command.getUserMessage());
+                            siteInformation.setDescription(command.getMessage().getText());
                             informationService.save(siteInformation);
                             sendMessage(command, "Описание сайта успешно изменёно");
                             lastAdminCommand = null;
@@ -166,8 +166,7 @@ public class Bot extends TelegramLongPollingBot {
                     lastAdminCommand.setQuery(ADD_SITE);
                     break;
                 case LIST:
-                    String sendTest = Utils.getListToResponse(informationService.getInformationsList());
-                    sendMessage(command, sendTest.isEmpty() ? "База в данный момент пуста" : sendTest);
+                    sendMessage(command, informationService.getAllSitesURL());
                     break;
                 case DELETE_SITE:
                     if (Utils.emptyIfNull(informationService.getAll()).isEmpty()) {
@@ -189,6 +188,11 @@ public class Bot extends TelegramLongPollingBot {
                     break;
                 case EDIT_SITE_DESCRIPTION:
                     updateLastAdminMessage(command, "Отправте новое описание сайта", EDIT_SITE_DESCRIPTION_BY_ID);
+                    break;
+                case GET_INFORMATION_BY_ID:
+                    SiteInformation siteInformation1 = informationService.getById(Utils.getIdFromCommand(command));
+                    sendMessage(command, siteInformation1.getUri());
+                    sendMessage(command, siteInformation1.getDescription());
                     break;
                 default:
                     sendButtons(command);
@@ -252,6 +256,33 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
+    private void sendSiteListButtons(Command command, Query query, String message, List<SiteInformation> sites) {
+        SendMessage sendMessage = new SendMessage()
+                .setChatId(command.getChatId())
+                .setText(message);
+        sendMessage.enableMarkdown(true);
+        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        Utils.emptyIfNull(sites).forEach(information1 -> {
+            rowsInline.add(Collections.singletonList(
+                    new InlineKeyboardButton()
+                            .setText(information1.getUri())
+                            .setCallbackData(
+                                    query.getCommandName()
+                                            .concat(" ")
+                                            .concat(String.valueOf(information1.getId()))
+                            )
+            ));
+        });
+        markupInline.setKeyboard(rowsInline);
+        sendMessage.setReplyMarkup(markupInline);
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            log.error("Ошыбка отправки панели упарвления");
+        }
+    }
+
     private void messageProcessing(Command command) {
         try {
             final String urlnfo = "Для получения информации о сайте отправте его URL адресс";
@@ -260,8 +291,7 @@ public class Bot extends TelegramLongPollingBot {
                     sendMessage(command , urlnfo, getSettingsKeyboard(command));
                     break;
                 case LIST:
-                    String sendTest = Utils.getListToResponse(informationService.getInformationsList());
-                    sendMessage(command, sendTest.isEmpty() ? "База в данный момент пуста" : sendTest);
+                    sendMessage(command, informationService.getAllSitesURL());
                     sendMessage(command , urlnfo, getSettingsKeyboard(command));
                     break;
                 case SITE:
@@ -280,9 +310,19 @@ public class Bot extends TelegramLongPollingBot {
                     }
                     sendMessage(command , urlnfo, getSettingsKeyboard(command));
                     break;
+                case GET_INFORMATION_BY_ID:
+                    SiteInformation siteInformation1 = informationService.getById(Utils.getIdFromCommand(command));
+                    sendMessage(command, siteInformation1.getUri());
+                    sendMessage(command, siteInformation1.getDescription());
+                    break;
                 default:
-                    sendButtons(command);
-                    sendMessage(command , urlnfo, getSettingsKeyboard(command));
+                    List<SiteInformation> informations = Utils.emptyIfNull(informationService.getSitesByUrl(command.getUserMessage()));
+                    if (informations.isEmpty()) {
+                        sendMessage(command, "Данный сайт отсутствует в нашей базе, попроуйте позже");
+                        sendButtons(command);
+                        break;
+                    }
+                    sendSiteListButtons(command, GET_INFORMATION_BY_ID, "Выберите сайте который вы имели в веду", informations);
                     break;
             }
         } catch (TelegramApiException e) {

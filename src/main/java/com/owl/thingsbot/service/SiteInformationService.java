@@ -24,4 +24,6 @@ public interface SiteInformationService {
     List<SiteInformation> getSitesByUrl(String url);
 
     SiteInformation getById(final Long id);
+
+    String getAllSitesURL();
 }

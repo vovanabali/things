@@ -25,14 +25,6 @@ public class SiteInformation {
 
     @Override
     public String toString() {
-        String host = EMPTY;
-        try {
-            URI siteUri = new URI(getUri());
-            host = siteUri.getHost();
-        } catch (Exception e) {
-            log.error("Failed to map site to string: " + uri);
-        }
         return uri + " - " +  description;
-        //return "[" + host + "](" + uri + ")" + " - " + description;
     }
 }

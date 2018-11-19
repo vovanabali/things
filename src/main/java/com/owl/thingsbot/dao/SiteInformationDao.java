@@ -12,5 +12,5 @@ public interface SiteInformationDao extends PagingAndSortingRepository<SiteInfor
 
     SiteInformation findByUriIsLike(String uri);
 
-    List<SiteInformation> findByUriContaining(final String url);
+    List<SiteInformation> findByUriContainingIgnoreCase(final String url);
 }
