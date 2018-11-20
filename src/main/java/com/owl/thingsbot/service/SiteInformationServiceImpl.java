@@ -48,7 +48,7 @@ public class SiteInformationServiceImpl implements SiteInformationService{
     public List<SiteInformation> getSitesByUrl(String url) {
         try {
             URL siteUrl = new URL(url);
-            return  siteInformationDao.findByUriContainingIgnoreCase(siteUrl.getHost());
+            return  siteInformationDao.findByUriContainingIgnoreCase(siteUrl.getHost().replace("www.", ""));
         } catch (MalformedURLException ignore) {}
         return siteInformationDao.findByUriContainingIgnoreCase(url);
     }
