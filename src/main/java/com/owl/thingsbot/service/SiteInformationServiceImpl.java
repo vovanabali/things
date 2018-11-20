@@ -6,6 +6,9 @@ import com.owl.thingsbot.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,6 +46,10 @@ public class SiteInformationServiceImpl implements SiteInformationService{
 
     @Override
     public List<SiteInformation> getSitesByUrl(String url) {
+        try {
+            URL siteUrl = new URL(url);
+            return  siteInformationDao.findByUriContainingIgnoreCase(siteUrl.getHost());
+        } catch (MalformedURLException ignore) {}
         return siteInformationDao.findByUriContainingIgnoreCase(url);
     }
 
