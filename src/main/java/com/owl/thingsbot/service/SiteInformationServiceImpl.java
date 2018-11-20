@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,8 +50,9 @@ public class SiteInformationServiceImpl implements SiteInformationService{
         try {
             URL siteUrl = new URL(url);
             return  siteInformationDao.findByUriContainingIgnoreCase(siteUrl.getHost().replace("www.", ""));
-        } catch (MalformedURLException ignore) {}
-        return siteInformationDao.findByUriContainingIgnoreCase(url);
+        } catch (MalformedURLException ignore) {
+            return siteInformationDao.findByUriContainingIgnoreCase(url.split("/")[0].split(Pattern.quote("\\"))[0]);
+        }
     }
 
     @Override
